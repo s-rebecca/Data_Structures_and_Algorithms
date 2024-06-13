@@ -1,0 +1,21 @@
+def rev_string(s):
+
+    stack = []
+    
+    words = s.split()
+    for i in words:
+        stack.append(i)
+    
+    rev_sen = " "
+    while len(stack)>0:
+        rev_sen = rev_sen+stack.pop()+" " 
+        
+    return rev_sen 
+
+s = input()
+revi_sen=rev_string(s)
+print(revi_sen) 
+
+    
+    
+    

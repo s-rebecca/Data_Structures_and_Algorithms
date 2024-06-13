@@ -1,0 +1,100 @@
+import heapq
+
+def dijkstra(graph, start):
+    # Initialize distances to all nodes as infinity
+    distances = {node: float('infinity') for node in graph}
+    distances[start] = 0  # Distance from start to itself is 0
+    pq = [(0, start)]  # Priority queue to store (distance, node) pairs
+
+    while pq:
+        current_distance, current_node = heapq.heappop(pq)
+
+        # Skip if we have already found a shorter path
+        if current_distance > distances[current_node]:
+            continue
+
+        # Update distances to neighbors through current node
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+
+    return distances
+
+
+# Example usage
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+
+start_node = 'A'
+distances = dijkstra(graph, start_node)
+
+# Print the shortest distances from the start node to all other nodes
+for node, distance in distances.items():
+    print(f"Shortest distance from {start_node} to {node}: {distance}")
+___________________________
+
+import heapq
+from collections import defaultdict
+
+class Graph:
+    def __init__(self):
+        self.nodes = set()
+        self.edges = defaultdict(list)
+
+    def add_node(self, value):
+        self.nodes.add(value)
+
+    def add_edge(self, from_node, to_node, weight):
+        self.edges[from_node].append((to_node, weight))
+        self.edges[to_node].append((from_node, weight))
+
+    def dijkstra(self, start):
+        # Initialize distances with infinity for all nodes
+        distances = {node: float('infinity') for node in self.nodes}
+        distances[start] = 0
+
+        # Priority queue to hold (distance, node) pairs
+        pq = [(0, start)]
+
+        while pq:
+            current_distance, current_node = heapq.heappop(pq)
+
+            # Skip if we've already found a shorter path to this node
+            if current_distance > distances[current_node]:
+                continue
+
+            for neighbor, weight in self.edges[current_node]:
+                distance = current_distance + weight
+
+                # Update distance if a shorter path is found
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    heapq.heappush(pq, (distance, neighbor))
+
+        return distances
+
+# Example usage
+graph = Graph()
+graph.add_node("A")
+graph.add_node("B")
+graph.add_node("C")
+graph.add_node("D")
+
+graph.add_edge("A", "B", 1)
+graph.add_edge("B", "C", 3)
+graph.add_edge("A", "C", 4)
+graph.add_edge("B", "D", 2)
+graph.add_edge("C", "D", 1)
+
+start_node = "A"
+shortest_distances = graph.dijkstra(start_node)
+
+print("Shortest distances from node", start_node)
+for node, distance in shortest_distances.items():
+    print(f"To {node}: {distance}")

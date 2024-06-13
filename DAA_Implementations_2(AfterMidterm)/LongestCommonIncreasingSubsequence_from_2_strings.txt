@@ -1,0 +1,20 @@
+def LCIS(self, arr1, m, arr2, n):
+    table=[0 for i in range(m+n+1)]
+    for i in range(m):
+        cur=0
+        for j in range(n):
+            if arr1[i]==arr2[j]:
+                if cur+1>table[j]:
+                    table[j]=cur+1
+            if arr1[i]>arr2[j]:
+                if table[j]>cur:
+                    cur=table[j]
+    return max(table)
+    
+if _name_ == '_main_':
+    t = int(input())
+    for _ in range(t):
+        m,n = [int(x) for x in input().strip().split()]
+        arr1 = [int(x) for x in input().strip().split()]
+        arr2 = [int(x) for x in input().strip().split()]
+        print(LCIS(arr1,m,arr2,n))

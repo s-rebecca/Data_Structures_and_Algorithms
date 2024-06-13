@@ -1,0 +1,41 @@
+Program to Find the Greatest Common Ancestor of a Binary Search Tree
+__________________________________________________________________________
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        
+def find_lca(root, node1, node2):
+    if root is None:
+        return None
+        
+    if root.key > node1 and root.key > node2:
+        return find_lca(root.left, node1, node2)
+        
+    if root.key < node1 and root.key < node2:
+        return find_lca(root.right, node1, node2)
+        
+    return root
+    
+root = Node(6)
+root.left = Node(2)
+root.right = Node(8)
+root.left.left = Node(0)
+root.left.right = Node(4)
+root.right.left = Node(7)
+root.right.right = Node(9)
+root.left.right.left = Node(3)
+root.left.right.right = Node(5)
+
+node1 = 2
+node2 = 8
+
+# Find the LCA of node1 and node2
+lca = find_lca(root, node1, node2)
+
+if lca is not None:
+    print("The Lowest Common Ancestor of", node1, "and", node2, "is", lca.key)
+else:
+    print("The Lowest Common Ancestor of", node1, "and", node2, "does not exist in the BST.")

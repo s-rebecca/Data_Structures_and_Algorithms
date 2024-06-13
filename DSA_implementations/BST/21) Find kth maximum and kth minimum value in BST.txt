@@ -1,0 +1,43 @@
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+def inorderTraversal(root, result):
+    if root is not None:
+        inorderTraversal(root.left, result)
+        result.append(root.key)
+        inorderTraversal(root.right, result)
+
+def findKthMinimum(root, k):
+    result = []
+    inorderTraversal(root, result)
+    if k <= len(result):
+        return result[k - 1]
+    else:
+        return None
+
+def findKthMaximum(root, k):
+    result = []
+    inorderTraversal(root, result)
+    if k <= len(result):
+        return result[-k]
+    else:
+        return None
+
+# Example usage:
+root = Node(4)
+root.left = Node(2)
+root.right = Node(6)
+root.left.left = Node(1)
+root.left.right = Node(3)
+root.right.left = Node(5)
+root.right.right = Node(7)
+
+k = 3
+kth_min = findKthMinimum(root, k)
+kth_max = findKthMaximum(root, k)
+
+print("Kth minimum value:", kth_min)
+print("Kth maximum value:", kth_max)

@@ -1,0 +1,26 @@
+program to find number of nodes in a binary tree
+__________________________________________________
+
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+def count_nodes(root):
+    if root is None:
+        return 0
+    else:
+        return 1 + count_nodes(root.left) + count_nodes(root.right)
+
+# Example usage
+# Constructing the Binary Tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+
+# Counting the number of nodes
+node_count = count_nodes(root)
+print("Number of nodes in the binary tree:", node_count)

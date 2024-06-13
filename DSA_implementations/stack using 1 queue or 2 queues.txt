@@ -1,0 +1,213 @@
+stack using 1 queue:
+
+class Queue:
+    def __init__(self):
+        self.items = [] #add ==
+        self.size = 0
+    
+    def isEmpty(self):
+        return self.items == []
+        
+    def enqueue(self, data):
+        self.size += 1
+        self.items.append(data)
+        
+    def dequeue(self):
+        self.size -= 1
+        return self.items.pop(0)
+        
+    def getSize(self):
+        return self.size 
+
+class Stack:
+    def __init__(self):
+        self.q = Queue()
+        
+    def isEmpty(self):
+        return self.q.isEmpty()
+    
+    def push(self, data):
+        self.q.enqueue(data)
+    
+    def pop(self):
+        for i in range(self.q.get_size - 1):
+            dequeu ed = self.q.dequeue()
+            self.q.enqueue(dequeued)
+        return self.q.dequeue()
+        
+
+        
+s = Stack()
+print('Menu')
+print('push <value>')
+print('pop')
+print('quit')
+ 
+while True:
+    do = input('What would you like to do? ').split()
+ 
+    operation = do[0].strip().lower()
+    if operation == 'push':
+        s.push(int(do[1]))
+    elif operation == 'pop':
+        if s.is_empty():
+            print('Stack is empty.')
+        else:
+            print('Popped value: ', s.pop())
+    elif operation == 'quit':
+        break
+___________________________________________________
+(new)
+class StackUsingQueue:
+    def __init__(self):
+        self.queue = []
+
+    def push(self, item):
+        # Get the current size of the queue
+        size = len(self.queue)
+
+        # Add the item to the end of the list
+        self.queue.append(item)
+
+        # Rotate the list to move the newly added element to the front
+        for _ in range(size):
+            self.queue.append(self.queue.pop(0))
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self.queue.pop(0)
+
+    def top(self):
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self.queue[0]
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+    def size(self):
+        return len(self.queue)
+
+if __name__ == "__main__":
+    stack = StackUsingQueue()
+
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+
+    print("Top:", stack.top())  # Output: Top: 3
+    print("Size:", stack.size())  # Output: Size: 3
+
+    print(stack.pop())  # Output: 3
+    print(stack.pop())  # Output: 2
+
+    print("Is empty?", stack.is_empty())  # Output: Is empty? False
+
+    stack.push(4)
+    print("Size:", stack.size())  # Output: Size: 2
+    print(stack.pop())  # Output: 4
+    print(stack.pop())  # Output: 1
+
+    print("Is empty?", stack.is_empty())  # Output: Is empty? True
+
+______________________________________________________________________________
+
+
+using 2 queues:
+
+class Stack:
+    def __init__(self):
+        self.q1=Queue()
+        self.q2=Queue()
+    
+    def isEmpty(self):
+        return self.q2.isEmpty() #trying to empty q2 always, filling q1
+        
+    def push(self, data):
+        self.q1.enqueue(data)
+        while not self.q2.isEmpty():  #enters loop ONLY if q2 has any elements
+            x = self.q2.dequeue()
+            self.q1.enqueue(x)
+        self.q1, self.q2 = self.q2, self.q1
+            
+    def pop(self):
+        return self.q2.dequeue()  # or store into variable and print
+        
+class Queue:
+    def __init__(self):
+        self.items = []
+        
+    def isEmpty(self):
+        return self.items == []
+        
+    def enqueue(self, data):
+        self.items.append(data)
+        
+    def dequeue(self):
+        return self.items.pop(0)
+        
+s = Stack()
+s.push(1)
+s.push(2)
+s.push(3)
+s.pop()
+
+________________________________________________________________________
+using 2 queues(new):
+
+class StackUsingQueues:
+    def __init__(self):
+        self.queue1 = []
+        self.queue2 = []
+
+    def push(self, item):
+        # Add the new item to queue2
+        self.queue2.append(item)
+
+        # Move all elements from queue1 to queue2
+        while self.queue1:
+            self.queue2.append(self.queue1.pop(0))
+
+        # Swap queue1 and queue2 references, so queue2 becomes the primary queue
+        self.queue1, self.queue2 = self.queue2, self.queue1
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self.queue1.pop(0)
+
+    def top(self):
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        return self.queue1[0]
+
+    def is_empty(self):
+        return len(self.queue1) == 0
+
+    def size(self):
+        return len(self.queue1)
+
+if __name__ == "__main__":
+    stack = StackUsingQueues()
+
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+
+    print("Top:", stack.top())  # Output: Top: 3
+    print("Size:", stack.size())  # Output: Size: 3
+
+    print(stack.pop())  # Output: 3
+    print(stack.pop())  # Output: 2
+
+    print("Is empty?", stack.is_empty())  # Output: Is empty? False
+
+    stack.push(4)
+    print("Size:", stack.size())  # Output: Size: 2
+    print(stack.pop())  # Output: 4
+    print(stack.pop())  # Output: 1
+
+    print("Is empty?", stack.is_empty())  # Output: Is empty? True
+
+        

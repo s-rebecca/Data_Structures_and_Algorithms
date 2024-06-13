@@ -1,0 +1,31 @@
+def transpose_graph(adj_list):
+    # Find the number of vertices in the original graph
+    num_vertices = len(adj_list)
+
+    # Create an empty adjacency list for the transpose graph
+    transpose_adj_list = [[] for _ in range(num_vertices)]
+
+    # Iterate through each vertex in the original graph
+    for vertex in range(num_vertices):
+        # Iterate through the adjacency list of the current vertex
+        for neighbor in adj_list[vertex]:
+            # Add the reverse edge in the transpose graph
+            transpose_adj_list[neighbor].append(vertex)  # Reverse direction
+
+    return transpose_adj_list
+
+# Example usage:
+# Define the original graph as an array of adjacency lists
+original_graph = [
+    [1, 2],    # Vertex 0 has outgoing edges to vertices 1 and 2
+    [2],       # Vertex 1 has an outgoing edge to vertex 2
+    [0, 3],    # Vertex 2 has outgoing edges to vertices 0 and 3
+    [1]        # Vertex 3 has an outgoing edge to vertex 1
+]
+
+# Compute the transpose graph
+transpose = transpose_graph(original_graph)
+
+# Print the transpose graph (array of adjacency lists)
+for i, adj_list in enumerate(transpose):
+    print(f"Vertex {i}: {adj_list}")

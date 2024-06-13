@@ -1,0 +1,35 @@
+def bubbleSort(arr):
+    n = len(arr)
+    
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                
+
+if __name__ == "__main__":
+    arr = [6,5,4,3,2,1]
+    
+    bubbleSort(arr)
+    
+    print("sorted array: ")
+    for i in range(len(arr)):
+        print(arr[i])
+        
+----------------------------------------------
+
+def bubble(arr):
+    for i in range(0, len(arr)-1):  #len(arr)-1 since n(passes) = i-1
+        flag = 0
+        for j in range(len(arr)-i-1):
+            if arr[j]>arr[j+1]:
+                temp = arr[j]
+                arr[j] = arr[j+1] 
+                arr[j+1] = temp
+                flag = 1
+        if flag == 0:
+            break
+    
+data = [5,4,3,2,1]
+bubble(data)
+print(data)

@@ -1,0 +1,49 @@
+class TreeNode:
+    def _init_(self, weight):
+        self.weight = weight
+        self.children = []
+
+def max_weight_independent_set(root):
+    if not root:
+        return 0
+
+    # Create a memoization table to store computed results
+    memo = {}
+
+    def dfs(node, include_current):
+        # Check if the result for the current node and inclusion/exclusion is already computed
+        if (node, include_current) in memo:
+            return memo[(node, include_current)]
+
+        # Base case: leaf node
+        if not node.children:
+            return node.weight if include_current else 0
+
+        # Case 1: Include the current node
+        include_current_result = node.weight
+        for child in node.children:
+            include_current_result += dfs(child, False)
+
+        # Case 2: Exclude the current node
+        exclude_current_result = 0
+        for child in node.children:
+            exclude_current_result += dfs(child, True)
+
+        # Store the result in the memoization table
+        memo[(node, include_current)] = max(include_current_result, exclude_current_result)
+
+        return memo[(node, include_current)]
+
+    # Start the recursion from the root
+    return max(dfs(root, True), dfs(root, False))
+
+# Example usage:
+# Create a tree
+root = TreeNode(5)
+root.children = [TreeNode(3), TreeNode(8), TreeNode(1)]
+root.children[0].children = [TreeNode(2), TreeNode(6)]
+root.children[1].children = [TreeNode(7), TreeNode(4)]
+
+# Find the maximum weight independent set
+result = max_weight_independent_set(root)
+print("Maximum weight independent set:", result)

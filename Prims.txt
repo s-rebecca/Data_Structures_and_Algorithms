@@ -1,0 +1,46 @@
+import heapq
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices  # Number of vertices
+        self.adj = [[] for _ in range(self.V)]  # Adjacency list to store edges and weights
+
+    def add_edge(self, u, v, w):
+        # Add an undirected edge between vertices u and v with weight w
+        self.adj[u].append((v, w))
+        self.adj[v].append((u, w))
+
+    def prim_mst(self, starting_vertex):
+        # Priority queue to store vertices and their corresponding minimum edge weight
+        pq = [(0, starting_vertex)]  # (weight, vertex)
+        visited = [False] * self.V
+        mst_weight = 0
+
+        while pq:
+            weight, u = heapq.heappop(pq)
+
+            if visited[u]:
+                continue
+
+            mst_weight += weight
+            visited[u] = True
+
+            for v, w in self.adj[u]:
+                if not visited[v]:
+                    heapq.heappush(pq, (w, v))
+
+        return mst_weight
+
+# Example usage
+g = Graph(5)
+g.add_edge(0, 1, 2)
+g.add_edge(0, 3, 1)
+g.add_edge(1, 2, 3)
+g.add_edge(1, 3, 3)
+g.add_edge(2, 3, 1)
+g.add_edge(2, 4, 4)
+g.add_edge(3, 4, 5)
+
+starting_vertex = 2  # Start from vertex 2
+mst_weight = g.prim_mst(starting_vertex)
+print(f"Minimum Spanning Tree Weight starting from vertex {starting_vertex}: {mst_weight}")

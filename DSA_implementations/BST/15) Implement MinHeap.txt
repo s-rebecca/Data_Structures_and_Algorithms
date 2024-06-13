@@ -1,0 +1,54 @@
+Implement MinHeap
+______________________
+
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+
+    def insert(self, val):
+        self.heap.append(val)
+        self._sift_up(len(self.heap) - 1)
+
+    def extract_min(self):
+        if not self.heap:
+            return None
+
+        min_val = self.heap[0]
+        last_val = self.heap.pop()
+        if self.heap:
+            self.heap[0] = last_val
+            self._sift_down(0)
+
+        return min_val
+
+    def _sift_up(self, i):
+        parent = (i - 1) // 2
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
+            self._sift_up(parent)
+
+    def _sift_down(self, i):
+        left_child = 2 * i + 1
+        right_child = 2 * i + 2
+        smallest = i
+        if left_child < len(self.heap) and self.heap[left_child] < self.heap[smallest]:
+            smallest = left_child
+        if right_child < len(self.heap) and self.heap[right_child] < self.heap[smallest]:
+            smallest = right_child
+        if smallest != i:
+            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
+            self._sift_down(smallest)
+
+heap = MinHeap()
+heap.insert(5)
+heap.insert(3)
+heap.insert(8)
+heap.insert(1)
+heap.insert(10)
+
+print("Heap elements:")
+while True:
+    min_val = heap.extract_min()
+    if min_val is None:
+        break
+    print(min_val)

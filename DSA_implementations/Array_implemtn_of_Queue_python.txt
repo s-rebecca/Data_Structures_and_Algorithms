@@ -1,0 +1,75 @@
+class Queue:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.queue = [None] * capacity
+        self.front = 0
+        self.rear = -1
+        self.size = 0
+
+    def is_empty(self):
+        return self.size == 0
+
+    def is_full(self):
+        return self.size == self.capacity
+
+    def enqueue(self, item):
+        if self.is_full():
+            print("Queue is full. Cannot enqueue item.")
+            return
+        self.rear = (self.rear + 1) % self.capacity
+        self.queue[self.rear] = item
+        self.size += 1
+
+    def dequeue(self):
+        if self.is_empty():
+            print("Queue is empty. Cannot dequeue item.")
+            return None
+        item = self.queue[self.front]
+        self.front = (self.front + 1) % self.capacity
+        self.size -= 1
+        return item
+
+    def peek(self):
+        if self.is_empty():
+            print("Queue is empty.")
+            return None
+        return self.queue[self.front]
+
+    def display(self):
+        if self.is_empty():
+            print("Queue is empty.")
+            return
+        current = self.front
+        elements = []
+        while current != self.rear:
+            elements.append(self.queue[current])
+            current = (current + 1) % self.capacity
+        elements.append(self.queue[self.rear])
+        print("Queue:", elements)
+
+
+# Create a queue with a capacity of 5
+queue = Queue(5)
+
+# Enqueue elements
+queue.enqueue(10)
+queue.enqueue(20)
+queue.enqueue(30)
+queue.enqueue(40)
+queue.enqueue(50)
+queue.enqueue(60)  # Queue is full, cannot enqueue this item
+
+# Display the queue
+queue.display()  # Output: Queue: [10, 20, 30, 40, 50]
+
+# Dequeue elements
+item = queue.dequeue()
+print("Dequeued item:", item)  # Output: Dequeued item: 10
+
+# Peek at the front element
+front_item = queue.peek()
+print("Front item:", front_item)  # Output: Front item: 20
+
+# Display the queue after dequeue
+queue.display()  # Output: Queue: [20, 30, 40, 50]
+

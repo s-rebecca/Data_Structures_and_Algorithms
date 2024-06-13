@@ -1,0 +1,1697 @@
+1.Program to Search for an Element in a Binary Search Tree
+
+class BSTNode:
+    def __init__(self, val=None):
+        self.left = None
+        self.right = None
+        self.val = val
+
+    def insert(self, val):
+        if not self.val:
+            self.val = val
+            return
+
+        if self.val == val:
+            return
+
+        if val < self.val:
+            if self.left:
+                self.left.insert(val)
+                return
+            self.left = BSTNode(val)
+            return
+
+        if self.right:
+            self.right.insert(val)
+            return
+        self.right = BSTNode(val)
+
+    def get_min(self):
+        current = self
+        while current.left is not None:
+            current = current.left
+        return current.val
+
+    def get_max(self):
+        current = self
+        while current.right is not None:
+            current = current.right
+        return current.val
+
+    def delete(self, val):
+        if self == None:
+            return self
+        if val < self.val:
+            if self.left:
+                self.left = self.left.delete(val)
+            return self
+        if val > self.val:
+            if self.right:
+                self.right = self.right.delete(val)
+            return self
+        if self.right == None:
+            return self.left
+        if self.left == None:
+            return self.right
+        min_larger_node = self.right
+        while min_larger_node.left:
+            min_larger_node = min_larger_node.left
+        self.val = min_larger_node.val
+        self.right = self.right.delete(min_larger_node.val)
+        return self
+
+    def exists(self, val):
+        if val == self.val:
+            return True
+
+        if val < self.val:
+            if self.left == None:
+                return False
+            return self.left.exists(val)
+
+        if self.right == None:
+            return False
+        return self.right.exists(val)
+
+    def preorder(self, vals):
+        if self.val is not None:
+            vals.append(self.val)
+        if self.left is not None:
+            self.left.preorder(vals)
+        if self.right is not None:
+            self.right.preorder(vals)
+        return vals
+
+    def inorder(self, vals):
+        if self.left is not None:
+            self.left.inorder(vals)
+        if self.val is not None:
+            vals.append(self.val)
+        if self.right is not None:
+            self.right.inorder(vals)
+        return vals
+
+    def postorder(self, vals):
+        if self.left is not None:
+            self.left.postorder(vals)
+        if self.right is not None:
+            self.right.postorder(vals)
+        if self.val is not None:
+            vals.append(self.val)
+        return vals
+
+2.Program to Implement Self Balancing Binary Search Tree
+
+class TreeNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+def sorted_array_to_bst(nums):
+    
+    if not nums:
+        return None
+    mid_val = len(nums)//2
+    node = TreeNode(nums[mid_val])
+    node.left = sorted_array_to_bst(nums[:mid_val])
+    node.right = sorted_array_to_bst(nums[mid_val+1:])
+    return node
+
+def preOrder(node): 
+    if not node: 
+        return      
+    print(node.val)
+    preOrder(node.left) 
+    preOrder(node.right)   
+    
+result = sorted_array_to_bst([1, 2, 3, 4, 5, 6, 7])
+preOrder(result)
+
+3.Program to Check if a Binary Search Tree is balanced or not
+class treenode:
+   def __init__(self, data):
+      self.data = data
+      self.left = self.right = None
+# funtion to find the height of the left subtree and right subtree
+class height:
+   def __init__(self):
+      self.height = 0
+# function to check if the tree is balanced or not
+def isBalanced(root):
+   lh = height()
+   rh = height()
+   if root is None:
+      return True
+   return (
+      (abs(lh.height - rh.height) <= 1)
+      and isBalanced(root.left)
+      and isBalanced(root.right)
+   )
+root = treenode(1)
+root.left = treenode(2)
+root.right = treenode(3)
+root.left.left = None
+root.left.right = None
+root.right.left = treenode(6)
+root.right.right = treenode(7)
+if isBalanced(root):
+   print("Balanced")
+else:
+   print("Not Balanced")
+
+4.Program to Find the Lowest Common Ancestor of a Binary Search Tree
+
+class TreeNode:
+   def __init__(self, data, left = None, right = None):
+      self.data = data
+      self.left = left
+      self.right = right
+class Solution():
+   def lowestCommonAncestor(self, root, p, q):
+      if not root:
+         return None
+      if p == root or q==root:
+         return root
+      left = self.lowestCommonAncestor(root.left, p, q)
+      right = self.lowestCommonAncestor(root.right, p, q)
+      if left and right:
+         return root
+      return left or right
+def insert(temp,data):
+   que = []
+   que.append(temp)
+   while (len(que)):
+      temp = que[0]
+      que.pop(0)
+      if (not temp.left):
+         temp.left = TreeNode(data)
+         break
+      else:
+         que.append(temp.left)
+      if (not temp.right):
+         temp.right = TreeNode(data)
+         break
+      else:
+         que.append(temp.right)
+def make_tree(elements):
+   Tree = TreeNode(elements[0])
+   for element in elements[1:]:
+      insert(Tree, element)
+   return Tree
+def search_node(root, element):
+   if (root == None):
+      return None
+   if (root.data == element):
+      return root
+   res1 = search_node(root.left, element)
+   if res1:
+      return res1
+   res2 = search_node(root.right, element)
+   return res2
+
+root = make_tree([6,2,8,0,4,7,9,None,None,3,5])
+ob1 = Solution()
+op = ob1.lowestCommonAncestor(root, search_node(root, 2), search_node(root, 8))
+print(op.data)
+
+5.	Program to Find the Greatest Common Ancestor of a Binary Search Tree
+
+6.	Program for Spiral Order Traversal of a Tree using Recursion
+
+import sys
+class Node: 
+
+    def __init__(self, info): 
+        self.info = info  
+        self.left = None
+        self.right = None 
+class node: 
+
+    def __init__(self, info): 
+        self.info = info  
+        self.next = None 
+
+
+class Stack: 
+
+    def __init__(self): 
+        self.top = None
+        
+    
+    def isEmpty(self):
+        if self.top is None:
+            return True
+        return False
+    
+    def push(self,data):
+        self.temp=node(data)
+        if self.temp is None:
+            print("Stack overflow")
+            return
+        self.temp.next=self.top
+        self.top=self.temp
+    
+    def pop(self):
+        if self.isEmpty():
+            print("Stack Underflow")
+            sys.exit(0)
+        d=self.top.info
+        self.top=self.top.next    
+        return d
+    
+    def peek(self):
+        if self.isEmpty():
+            print("Stack Underflow")
+            sys.exit(0)
+        d=self.top.info
+        return d
+    def display(self):
+        if self.isEmpty():
+            print("Stack Underflow")
+            sys.exit(0)
+        self.p=self.top
+        while self.p is not None:
+            print(self.p.info)
+            self.p=self.p.next
+
+def printSpiralRecursive(root):
+    stack1=Stack()
+    stack2=Stack()
+    stack1.push(root)
+    
+    while (stack1.isEmpty() is not True) or (stack2.isEmpty() is not True):
+        while(stack1.isEmpty() is not True):
+            temp=stack1.pop()
+            print(temp.info)
+            if(temp.right is not None):
+                stack2.push(temp.right)
+            if(temp.left is not None):
+                stack2.push(temp.left)
+        while(stack2.isEmpty() is not True):
+            temp=stack2.pop()
+            print(temp.info)
+            if(temp.left is not None):
+                stack1.push(temp.left)
+            if(temp.right is not None):
+                stack1.push(temp.right)
+
+if __name__=='__main__':
+    root=None
+    root=Node(10)
+    root.left=Node(20)
+    root.right=Node(30)
+    root.left.left=Node(40)
+    root.left.right=Node(50)
+    root.right.left=Node(60)
+    root.right.right=Node(70)
+    printSpiralRecursive(root)
+
+7.	Program to Find Deepest Left Leaf in a Binary Tree
+
+# Python program to find the deepest left leaf in a given
+# Binary tree
+ 
+# A binary tree node
+class Node:
+     
+    # Constructor to create a new node
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+ 
+# A utility function to find deepest leaf node.
+# lvl:  level of current node.
+# maxlvl: pointer to the deepest left leaf node found so far
+# isLeft: A bool indicate that this node is left child
+# of its parent
+# resPtr: Pointer to the result
+def deepestLeftLeafUtil(root, lvl, maxlvl, isLeft):
+     
+    # Base CAse
+    if root is None:
+        return
+ 
+    # Update result if this node is left leaf and its
+    # level is more than the max level of the current result
+    if(isLeft is True):
+        if (root.left == None and root.right == None):
+            if lvl > maxlvl[0] :
+                deepestLeftLeafUtil.resPtr = root
+                maxlvl[0] = lvl
+                return
+ 
+    # Recur for left and right subtrees
+    deepestLeftLeafUtil(root.left, lvl+1, maxlvl, True)
+    deepestLeftLeafUtil(root.right, lvl+1, maxlvl, False)
+ 
+# A wrapper for left and right subtree
+def deepestLeftLeaf(root):
+    maxlvl = [0]
+    deepestLeftLeafUtil.resPtr = None
+    deepestLeftLeafUtil(root, 0, maxlvl, False)
+    return deepestLeftLeafUtil.resPtr
+ 
+ 
+# Driver program to test above function
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.right.left = Node(5)
+root.right.right = Node(6)
+root.right.left.right = Node(7)
+root.right.right.right = Node(8)
+root.right.left.right.left = Node(9)
+root.right.right.right.right= Node(10)
+ 
+result = deepestLeftLeaf(root)
+ 
+if result is None:
+    print ("There is not left leaf in the given tree")
+else:
+    print ("The deepst left child is", result.val)
+
+8.	Program to Create Mirror Image of a Binary Tree
+
+class newNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = self.right = None
+ 
+ 
+""" Change a tree so that the roles of the
+    left and right pointers are swapped at
+    every node.
+ 
+So the tree...
+        4
+        / \
+    2 5
+    / \
+    1 3
+ 
+is changed to...
+    4
+    / \
+    5 2
+    / \
+    3 1
+"""
+ 
+ 
+def mirror(node):
+ 
+    if (node == None):
+        return
+    else:
+ 
+        temp = node
+ 
+        """ do the subtrees """
+        mirror(node.left)
+        mirror(node.right)
+ 
+        """ swap the pointers in this node """
+        temp = node.left
+        node.left = node.right
+        node.right = temp
+ 
+ 
+""" Helper function to print Inorder traversal."""
+ 
+ 
+def inOrder(node):
+ 
+    if (node == None):
+        return
+ 
+    inOrder(node.left)
+    print(node.data, end=" ")
+    inOrder(node.right)
+ 
+ 
+# Driver code
+if __name__ == "__main__":
+ 
+    root = newNode(1)
+    root.left = newNode(2)
+    root.right = newNode(3)
+    root.left.left = newNode(4)
+    root.left.right = newNode(5)
+ 
+    """ Print inorder traversal of
+        the input tree """
+    print("Inorder traversal of the",
+          "constructed tree is")
+    inOrder(root)
+ 
+    """ Convert tree to its mirror """
+    mirror(root)
+ 
+    """ Print inorder traversal of
+        the mirror tree """
+    print("\nInorder traversal of",
+          "the mirror tree is ")
+    inOrder(root)
+
+9.	Program to Implement Heap
+
+class MinHeap:
+    def __init__(self):
+        """
+        On this implementation the heap list is initialized with a value
+        """
+        self.heap_list = [0]
+        self.current_size = 0
+ 
+    def sift_up(self, i):
+        """
+        Moves the value up in the tree to maintain the heap property.
+        """
+        # While the element is not the root or the left element
+        Stop = False
+        while (i // 2 > 0) and Stop == False:
+            # If the element is less than its parent swap the elements
+            if self.heap_list[i] < self.heap_list[i // 2]:
+                self.heap_list[i], self.heap_list[i // 2] = self.heap_list[i // 2], self.heap_list[i]
+            else:
+                Stop = True
+            # Move the index to the parent to keep the properties
+            i = i // 2
+ 
+    def insert(self, k):
+        """
+        Inserts a value into the heap
+        """
+        # Append the element to the heap
+        self.heap_list.append(k)
+        # Increase the size of the heap.
+        self.current_size += 1
+        # Move the element to its position from bottom to the top
+        self.sift_up(self.current_size)
+ 
+    def sift_down(self, i):
+        # if the current node has at least one child
+        while (i * 2) <= self.current_size:
+            # Get the index of the min child of the current node
+            mc = self.min_child(i)
+            # Swap the values of the current element is greater than its min child
+            if self.heap_list[i] > self.heap_list[mc]:
+                self.heap_list[i], self.heap_list[mc] = self.heap_list[mc], self.heap_list[i]
+            i = mc
+ 
+    def min_child(self, i):
+        # If the current node has only one child, return the index of the unique child
+        if (i * 2)+1 > self.current_size:
+            return i * 2
+        else:
+            # Herein the current node has two children
+            # Return the index of the min child according to their values
+            if self.heap_list[i*2] < self.heap_list[(i*2)+1]:
+                return i * 2
+            else:
+                return (i * 2) + 1
+ 
+    def delete_min(self):
+        # Equal to 1 since the heap list was initialized with a value
+        if len(self.heap_list) == 1:
+            return 'Empty heap'
+ 
+        # Get root of the heap (The min value of the heap)
+        root = self.heap_list[1]
+ 
+        # Move the last value of the heap to the root
+        self.heap_list[1] = self.heap_list[self.current_size]
+ 
+        # Pop the last value since a copy was set on the root
+        *self.heap_list, _ = self.heap_list
+ 
+        # Decrease the size of the heap
+        self.current_size -= 1
+ 
+        # Move down the root (value at index 1) to keep the heap property
+        self.sift_down(1)
+ 
+        # Return the min value of the heap
+        return root
+"""
+Driver program
+"""
+# Same tree as above example.
+my_heap = MinHeap()
+my_heap.insert(5)
+my_heap.insert(6)
+my_heap.insert(7)
+my_heap.insert(9)
+my_heap.insert(13)
+my_heap.insert(11)
+my_heap.insert(10)
+
+print(my_heap.delete_min()) # removing min node i.e 5 
+
+10.	Program to Implement Binary Heap
+
+class BinaryHeap:
+    def __init__(self):
+        self.items = []
+ 
+    def size(self):
+        return len(self.items)
+ 
+    def parent(self, i):
+        return (i - 1)//2
+ 
+    def left(self, i):
+        return 2*i + 1
+ 
+    def right(self, i):
+        return 2*i + 2
+ 
+    def get(self, i):
+        return self.items[i]
+ 
+    def get_max(self):
+        if self.size() == 0:
+            return None
+        return self.items[0]
+ 
+    def extract_max(self):
+        if self.size() == 0:
+            return None
+        largest = self.get_max()
+        self.items[0] = self.items[-1]
+        del self.items[-1]
+        self.max_heapify(0)
+        return largest
+ 
+    def max_heapify(self, i):
+        l = self.left(i)
+        r = self.right(i)
+        if (l <= self.size() - 1 and self.get(l) > self.get(i)):
+            largest = l
+        else:
+            largest = i
+        if (r <= self.size() - 1 and self.get(r) > self.get(largest)):
+            largest = r
+        if (largest != i):
+            self.swap(largest, i)
+            self.max_heapify(largest)
+ 
+    def swap(self, i, j):
+        self.items[i], self.items[j] = self.items[j], self.items[i]
+ 
+    def insert(self, key):
+        index = self.size()
+        self.items.append(key)
+ 
+        while (index != 0):
+            p = self.parent(index)
+            if self.get(p) < self.get(index):
+                self.swap(p, index)
+            index = p
+ 
+ 
+bheap = BinaryHeap()
+ 
+print('Menu')
+print('insert <data>')
+print('max get')
+print('max extract')
+print('quit')
+ 
+while True:
+    do = input('What would you like to do? ').split()
+ 
+    operation = do[0].strip().lower()
+    if operation == 'insert':
+        data = int(do[1])
+        bheap.insert(data)
+    elif operation == 'max':
+        suboperation = do[1].strip().lower()
+        if suboperation == 'get':
+            print('Maximum value: {}'.format(bheap.get_max()))
+        elif suboperation == 'extract':
+            print('Maximum value removed: {}'.format(bheap.extract_max()))
+ 
+    elif operation == 'quit':
+        break
+
+11.	Program to Implement Weak Heap
+
+12.	Program to Implement Binomial Heap
+
+class BinomialTree:
+    def __init__(self, key):
+        self.key = key
+        self.children = []
+        self.order = 0
+ 
+    def add_at_end(self, t):
+        self.children.append(t)
+        self.order = self.order + 1
+ 
+ 
+class BinomialHeap:
+    def __init__(self):
+        self.trees = []
+ 
+    def extract_min(self):
+        if self.trees == []:
+            return None
+        smallest_node = self.trees[0]
+        for tree in self.trees:
+            if tree.key < smallest_node.key:
+                smallest_node = tree
+        self.trees.remove(smallest_node)
+        h = BinomialHeap()
+        h.trees = smallest_node.children
+        self.merge(h)
+ 
+        return smallest_node.key
+ 
+    def get_min(self):
+        if self.trees == []:
+            return None
+        least = self.trees[0].key
+        for tree in self.trees:
+            if tree.key < least:
+                least = tree.key
+        return least
+ 
+    def combine_roots(self, h):
+        self.trees.extend(h.trees)
+        self.trees.sort(key=lambda tree: tree.order)
+ 
+    def merge(self, h):
+        self.combine_roots(h)
+        if self.trees == []:
+            return
+        i = 0
+        while i < len(self.trees) - 1:
+            current = self.trees[i]
+            after = self.trees[i + 1]
+            if current.order == after.order:
+                if (i + 1 < len(self.trees) - 1
+                    and self.trees[i + 2].order == after.order):
+                    after_after = self.trees[i + 2]
+                    if after.key < after_after.key:
+                        after.add_at_end(after_after)
+                        del self.trees[i + 2]
+                    else:
+                        after_after.add_at_end(after)
+                        del self.trees[i + 1]
+                else:
+                    if current.key < after.key:
+                        current.add_at_end(after)
+                        del self.trees[i + 1]
+                    else:
+                        after.add_at_end(current)
+                        del self.trees[i]
+            i = i + 1
+ 
+    def insert(self, key):
+        g = BinomialHeap()
+        g.trees.append(BinomialTree(key))
+        self.merge(g)
+ 
+ 
+bheap = BinomialHeap()
+ 
+print('Menu')
+print('insert <data>')
+print('min get')
+print('min extract')
+print('quit')
+ 
+while True:
+    do = input('What would you like to do? ').split()
+ 
+    operation = do[0].strip().lower()
+    if operation == 'insert':
+        data = int(do[1])
+        bheap.insert(data)
+    elif operation == 'min':
+        suboperation = do[1].strip().lower()
+        if suboperation == 'get':
+            print('Minimum value: {}'.format(bheap.get_min()))
+        elif suboperation == 'extract':
+            print('Minimum value removed: {}'.format(bheap.extract_min()))
+ 
+    elif operation == 'quit':
+        break
+
+13.	Program to Implement Fibonacci Heap
+
+import math
+ 
+class FibonacciTree:
+    def __init__(self, key):
+        self.key = key
+        self.children = []
+        self.order = 0
+ 
+    def add_at_end(self, t):
+        self.children.append(t)
+        self.order = self.order + 1
+ 
+ 
+class FibonacciHeap:
+    def __init__(self):
+        self.trees = []
+        self.least = None
+        self.count = 0
+ 
+    def insert(self, key):
+        new_tree = FibonacciTree(key)
+        self.trees.append(new_tree)
+        if (self.least is None or key < self.least.key):
+            self.least = new_tree
+        self.count = self.count + 1
+ 
+    def get_min(self):
+        if self.least is None:
+            return None
+        return self.least.key
+ 
+    def extract_min(self):
+        smallest = self.least
+        if smallest is not None:
+            for child in smallest.children:
+                self.trees.append(child)
+            self.trees.remove(smallest)
+            if self.trees == []:
+                self.least = None
+            else:
+                self.least = self.trees[0]
+                self.consolidate()
+            self.count = self.count - 1
+            return smallest.key
+ 
+    def consolidate(self):
+        aux = (floor_log2(self.count) + 1)*[None]
+ 
+        while self.trees != []:
+            x = self.trees[0]
+            order = x.order
+            self.trees.remove(x)
+            while aux[order] is not None:
+                y = aux[order]
+                if x.key > y.key:
+                    x, y = y, x
+                x.add_at_end(y)
+                aux[order] = None
+                order = order + 1
+            aux[order] = x
+ 
+        self.least = None
+        for k in aux:
+            if k is not None:
+                self.trees.append(k)
+                if (self.least is None
+                    or k.key < self.least.key):
+                    self.least = k
+ 
+ 
+def floor_log2(x):
+    return math.frexp(x)[1] - 1
+ 
+ 
+fheap = FibonacciHeap()
+ 
+print('Menu')
+print('insert <data>')
+print('min get')
+print('min extract')
+print('quit')
+ 
+while True:
+    do = input('What would you like to do? ').split()
+ 
+    operation = do[0].strip().lower()
+    if operation == 'insert':
+        data = int(do[1])
+        fheap.insert(data)
+    elif operation == 'min':
+        suboperation = do[1].strip().lower()
+        if suboperation == 'get':
+            print('Minimum value: {}'.format(fheap.get_min()))
+        elif suboperation == 'extract':
+            print('Minimum value removed: {}'.format(fheap.extract_min()))
+ 
+    elif operation == 'quit':
+        break
+
+14.	Program to Implement Leftist Heap
+
+15.	Program to Implement Min Heap
+
+import sys
+  
+class MinHeap:
+  
+    def __init__(self, maxsize):
+        self.maxsize = maxsize
+        self.size = 0
+        self.Heap = [0]*(self.maxsize + 1)
+        self.Heap[0] = -1 * sys.maxsize
+        self.FRONT = 1
+  
+    # Function to return the position of
+    # parent for the node currently
+    # at pos
+    def parent(self, pos):
+        return pos//2
+  
+    # Function to return the position of
+    # the left child for the node currently
+    # at pos
+    def leftChild(self, pos):
+        return 2 * pos
+  
+    # Function to return the position of
+    # the right child for the node currently
+    # at pos
+    def rightChild(self, pos):
+        return (2 * pos) + 1
+  
+    # Function that returns true if the passed
+    # node is a leaf node
+    def isLeaf(self, pos):
+        return pos*2 > self.size
+  
+    # Function to swap two nodes of the heap
+    def swap(self, fpos, spos):
+        self.Heap[fpos], self.Heap[spos] = self.Heap[spos], self.Heap[fpos]
+  
+    # Function to heapify the node at pos
+    def minHeapify(self, pos):
+  
+        # If the node is a non-leaf node and greater
+        # than any of its child
+        if not self.isLeaf(pos):
+            if (self.Heap[pos] > self.Heap[self.leftChild(pos)] or 
+               self.Heap[pos] > self.Heap[self.rightChild(pos)]):
+  
+                # Swap with the left child and heapify
+                # the left child
+                if self.Heap[self.leftChild(pos)] < self.Heap[self.rightChild(pos)]:
+                    self.swap(pos, self.leftChild(pos))
+                    self.minHeapify(self.leftChild(pos))
+  
+                # Swap with the right child and heapify
+                # the right child
+                else:
+                    self.swap(pos, self.rightChild(pos))
+                    self.minHeapify(self.rightChild(pos))
+  
+    # Function to insert a node into the heap
+    def insert(self, element):
+        if self.size >= self.maxsize :
+            return
+        self.size+= 1
+        self.Heap[self.size] = element
+  
+        current = self.size
+  
+        while self.Heap[current] < self.Heap[self.parent(current)]:
+            self.swap(current, self.parent(current))
+            current = self.parent(current)
+  
+    # Function to print the contents of the heap
+    def Print(self):
+        for i in range(1, (self.size//2)+1):
+            print(" PARENT : "+ str(self.Heap[i])+" LEFT CHILD : "+ 
+                                str(self.Heap[2 * i])+" RIGHT CHILD : "+
+                                str(self.Heap[2 * i + 1]))
+  
+    # Function to build the min heap using
+    # the minHeapify function
+    def minHeap(self):
+  
+        for pos in range(self.size//2, 0, -1):
+            self.minHeapify(pos)
+  
+    # Function to remove and return the minimum
+    # element from the heap
+    def remove(self):
+  
+        popped = self.Heap[self.FRONT]
+        self.Heap[self.FRONT] = self.Heap[self.size]
+        self.size-= 1
+        self.minHeapify(self.FRONT)
+        return popped
+  
+# Driver Code
+if __name__ == "__main__":
+      
+    print('The minHeap is ')
+    minHeap = MinHeap(15)
+    minHeap.insert(5)
+    minHeap.insert(3)
+    minHeap.insert(17)
+    minHeap.insert(10)
+    minHeap.insert(84)
+    minHeap.insert(19)
+    minHeap.insert(6)
+    minHeap.insert(22)
+    minHeap.insert(9)
+    minHeap.minHeap()
+  
+    minHeap.Print()
+    print("The Min val is " + str(minHeap.remove()))
+
+16.	Program to Implement Max Heap
+
+import sys
+  
+class MaxHeap:
+  
+    def __init__(self, maxsize):
+          
+        self.maxsize = maxsize
+        self.size = 0
+        self.Heap = [0] * (self.maxsize + 1)
+        self.Heap[0] = sys.maxsize
+        self.FRONT = 1
+  
+    # Function to return the position of
+    # parent for the node currently
+    # at pos
+    def parent(self, pos):
+          
+        return pos // 2
+  
+    # Function to return the position of
+    # the left child for the node currently
+    # at pos
+    def leftChild(self, pos):
+          
+        return 2 * pos
+  
+    # Function to return the position of
+    # the right child for the node currently
+    # at pos
+    def rightChild(self, pos):
+          
+        return (2 * pos) + 1
+  
+    # Function that returns true if the passed
+    # node is a leaf node
+    def isLeaf(self, pos):
+          
+        if pos >= (self.size//2) and pos <= self.size:
+            return True
+        return False
+  
+    # Function to swap two nodes of the heap
+    def swap(self, fpos, spos):
+          
+        self.Heap[fpos], self.Heap[spos] = (self.Heap[spos], 
+                                            self.Heap[fpos])
+  
+    # Function to heapify the node at pos
+    def maxHeapify(self, pos):
+  
+        # If the node is a non-leaf node and smaller
+        # than any of its child
+        if not self.isLeaf(pos):
+            if (self.Heap[pos] < self.Heap[self.leftChild(pos)] or
+                self.Heap[pos] < self.Heap[self.rightChild(pos)]):
+  
+                # Swap with the left child and heapify
+                # the left child
+                if (self.Heap[self.leftChild(pos)] > 
+                    self.Heap[self.rightChild(pos)]):
+                    self.swap(pos, self.leftChild(pos))
+                    self.maxHeapify(self.leftChild(pos))
+  
+                # Swap with the right child and heapify
+                # the right child
+                else:
+                    self.swap(pos, self.rightChild(pos))
+                    self.maxHeapify(self.rightChild(pos))
+  
+    # Function to insert a node into the heap
+    def insert(self, element):
+          
+        if self.size >= self.maxsize:
+            return
+        self.size += 1
+        self.Heap[self.size] = element
+  
+        current = self.size
+  
+        while (self.Heap[current] > 
+               self.Heap[self.parent(current)]):
+            self.swap(current, self.parent(current))
+            current = self.parent(current)
+  
+    # Function to print the contents of the heap
+    def Print(self):
+          
+        for i in range(1, (self.size // 2) + 1):
+            print("PARENT : " + str(self.Heap[i]) + 
+                  "LEFT CHILD : " + str(self.Heap[2 * i]) +
+                  "RIGHT CHILD : " + str(self.Heap[2 * i + 1]))
+  
+    # Function to remove and return the maximum
+    # element from the heap
+    def extractMax(self):
+  
+        popped = self.Heap[self.FRONT]
+        self.Heap[self.FRONT] = self.Heap[self.size]
+        self.size -= 1
+        self.maxHeapify(self.FRONT)
+          
+        return popped
+  
+# Driver Code
+if __name__ == "__main__":
+      
+    print('The maxHeap is ')
+      
+    maxHeap = MaxHeap(15)
+    maxHeap.insert(5)
+    maxHeap.insert(3)
+    maxHeap.insert(17)
+    maxHeap.insert(10)
+    maxHeap.insert(84)
+    maxHeap.insert(19)
+    maxHeap.insert(6)
+    maxHeap.insert(22)
+    maxHeap.insert(9)
+  
+    maxHeap.Print()
+      
+    print("The Max val is " + str(maxHeap.extractMax()))
+
+17.	Program to Print the Nodes at Odd Levels of a Tree
+
+class newNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = self.right = None
+ 
+def printOddNodes(root, isOdd = True):
+     
+    # If empty tree
+    if (root == None):
+        return
+ 
+    # If current node is of odd level
+    if (isOdd):
+        print(root.data, end = " ")
+ 
+    # Recur for children with isOdd
+    # switched.
+    printOddNodes(root.left, not isOdd)
+    printOddNodes(root.right, not isOdd)
+ 
+# Driver code
+if __name__ == '__main__':
+    root = newNode(1)
+    root.left = newNode(2)
+    root.right = newNode(3)
+    root.left.left = newNode(4)
+    root.left.right = newNode(5)
+    printOddNodes(root)
+
+18.	Program to Create Expression Tree from Infix Expression
+
+class nptr:
+   
+    # Constructor to set the data of
+    # the newly created tree node
+    def __init__(self, c):
+        self.data = c
+        self.left = None
+        self.right = None
+ 
+# Function to create new node
+def newNode(c):
+    n = nptr(c)
+    return n
+ 
+# Function to build Expression Tree
+def build(s):
+   
+    # Stack to hold nodes
+    stN = []
+ 
+    # Stack to hold chars
+    stC = []
+ 
+    # Prioritising the operators
+    p = [0]*(123)
+    p[ord('+')] = p[ord('-')] = 1
+    p[ord('/')] = p[ord('*')] = 2
+    p[ord('^')] = 3
+    p[ord(')')] = 0
+ 
+    for i in range(len(s)):
+        if (s[i] == '('):
+            # Push '(' in char stack
+            stC.append(s[i])
+ 
+        # Push the operands in node stack
+        elif (s[i].isalpha()):
+            t = newNode(s[i])
+            stN.append(t)
+        elif (p[ord(s[i])] > 0):
+           
+            # If an operator with lower or
+            # same associativity appears
+            while (len(stC) != 0 and stC[-1] != '(' and ((s[i] != '^' and p[ord(stC[-1])] >= p[ord(s[i])])
+                    or (s[i] == '^'and
+                    p[ord(stC[-1])] > p[ord(s[i])]))):
+               
+                # Get and remove the top element
+                # from the character stack
+                t = newNode(stC[-1])
+                stC.pop()
+ 
+                # Get and remove the top element
+                # from the node stack
+                t1 = stN[-1]
+                stN.pop()
+ 
+                # Get and remove the currently top
+                # element from the node stack
+                t2 = stN[-1]
+                stN.pop()
+ 
+                # Update the tree
+                t.left = t2
+                t.right = t1
+ 
+                # Push the node to the node stack
+                stN.append(t)
+ 
+            # Push s[i] to char stack
+            stC.append(s[i])
+             
+        elif (s[i] == ')'):
+            while (len(stC) != 0 and stC[-1] != '('):
+                t = newNode(stC[-1])
+                stC.pop()
+                t1 = stN[-1]
+                stN.pop()
+                t2 = stN[-1]
+                stN.pop()
+                t.left = t2
+                t.right = t1
+                stN.append(t)
+            stC.pop()
+    t = stN[-1]
+    return t
+ 
+# Function to print the post order
+# traversal of the tree
+def postorder(root):
+    if (root != None):
+        postorder(root.left)
+        postorder(root.right)
+        print(root.data, end = "")
+ 
+s = "(a^b^(c/d/e-f)^(x*y-m*n))"
+s = "(" + s
+s += ")"
+root = build(s)
+ 
+# Function call
+postorder(root)
+
+19.	Program to find Height of a binary tree
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+ 
+def height(root):
+ 
+    # Check if the binary tree is empty
+    if root is None:
+        # If TRUE return 0
+        return 0 
+    # Recursively call height of each node
+    leftAns = height(root.left)
+    rightAns = height(root.right)
+ 
+    # Return max(leftHeight, rightHeight) at each iteration
+    return max(leftAns, rightAns) + 1
+ 
+# Test the algorithm
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+ 
+print("Height of the binary tree is: " + str(height(root)))
+
+20.	Program to calculate & display Product of all leaf nodes of binary tree
+
+class Node:
+     
+    # Function to initialise the node object
+    def __init__(self, data):
+        self.data = data # Assign data
+        self.next =None
+ 
+# return new node
+def newNode( data) :
+ 
+    temp = Node(0)
+    temp.data = data
+    temp.left = temp.right = None
+    return temp
+ 
+# product
+prod = 1
+ 
+# utility function which calculates
+# product of all leaf nodes
+def leafProduct( root ) :
+ 
+    global prod
+    if (root == None) :
+        return
+ 
+    # product root data to prod if
+    # root is a leaf node
+    if (root.left == None and root.right == None):
+        prod *= root.data
+ 
+    # propagate recursively in left
+    # and right subtree
+    leafProduct(root.left)
+    leafProduct(root.right)
+ 
+# Driver program
+ 
+# construct binary tree
+root = newNode(1)
+root.left = newNode(2)
+root.left.left = newNode(4)
+root.left.right = newNode(5)
+root.right = newNode(3)
+root.right.right = newNode(7)
+root.right.left = newNode(6)
+root.right.left.right = newNode(8)
+ 
+# variable to store product of leaf nodes
+prod = 1
+leafProduct(root)
+print(prod )
+
+21.	Program to Find kth maximum and kth minimum value in a binary search tree
+
+# program to find k-th smallest element
+# in a BST.
+ 
+# A BST node
+ 
+ 
+class Node:
+ 
+    def __init__(self, key):
+ 
+        self.data = key
+        self.left = None
+        self.right = None
+ 
+# Recursive function to insert an key into BST
+ 
+ 
+def insert(root, x):
+ 
+    if (root == None):
+        return Node(x)
+    if (x < root.data):
+        root.left = insert(root.left, x)
+    elif (x > root.data):
+        root.right = insert(root.right, x)
+    return root
+ 
+# Function to find k'th largest element
+# in BST. Here count denotes the number
+# of nodes processed so far
+ 
+ 
+def kthSmallest(root):
+ 
+    global k
+ 
+    # Base case
+    if (root == None):
+        return None
+ 
+    # Search in left subtree
+    left = kthSmallest(root.left)
+ 
+    # If k'th smallest is found in
+    # left subtree, return it
+    if (left != None):
+        return left
+ 
+    # If current element is k'th
+    # smallest, return it
+    k -= 1
+    if (k == 0):
+        return root
+ 
+    # Else search in right subtree
+    return kthSmallest(root.right)
+ 
+# Function to find k'th largest element in BST
+ 
+ 
+def printKthSmallest(root):
+ 
+    res = kthSmallest(root)
+ 
+    if (res == None):
+        print("There are less than k nodes in the BST")
+    else:
+        print("K-th Smallest Element is ", res.data)
+ 
+ 
+# Driver code
+if __name__ == '__main__':
+ 
+    root = None
+    keys = [20, 8, 22, 4, 12, 10, 14]
+ 
+    for x in keys:
+        root = insert(root, x)
+ 
+    k = 3
+
+22.	Program to Convert BST to min-heap
+
+class Node:
+ 
+    # Constructor to create a new node
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+ 
+# function for the inorder traversal
+# of the tree so as to store the node
+# values in 'arr' in sorted order
+ 
+ 
+def inorderTraversal(root, arr):
+    if root == None:
+        return
+ 
+    # first recur on left subtree
+    inorderTraversal(root.left, arr)
+ 
+    # then copy the data of the node
+    arr.append(root.data)
+ 
+    # now recur for right subtree
+    inorderTraversal(root.right, arr)
+ 
+# function to convert the given
+# BST to MIN HEAP performs preorder
+# traversal of the tree
+ 
+ 
+def BSTToMinHeap(root, arr, i):
+    if root == None:
+        return
+ 
+    # first copy data at index 'i' of
+    # 'arr' to the node
+    i[0] += 1
+    root.data = arr[i[0]]
+ 
+    # then recur on left subtree
+    BSTToMinHeap(root.left, arr, i)
+ 
+    # now recur on right subtree
+    BSTToMinHeap(root.right, arr, i)
+ 
+# utility function to convert the
+# given BST to MIN HEAP
+ 
+ 
+def convertToMinHeapUtil(root):
+ 
+    # vector to store the data of
+    # all the nodes of the BST
+    arr = []
+    i = [-1]
+ 
+    # inorder traversal to populate 'arr'
+    inorderTraversal(root, arr)
+ 
+    # BST to MIN HEAP conversion
+    BSTToMinHeap(root, arr, i)
+ 
+# function for the preorder traversal
+# of the tree
+ 
+ 
+def preorderTraversal(root):
+    if root == None:
+        return
+ 
+    # first print the root's data
+    print(root.data, end=" ")
+ 
+    # then recur on left subtree
+    preorderTraversal(root.left)
+ 
+    # now recur on right subtree
+    preorderTraversal(root.right)
+ 
+ 
+# Driver's Code
+if __name__ == '__main__':
+ 
+    # BST formation
+    root = Node(4)
+    root.left = Node(2)
+    root.right = Node(6)
+    root.left.left = Node(1)
+    root.left.right = Node(3)
+    root.right.left = Node(5)
+    root.right.right = Node(7)
+ 
+    # Function call
+    convertToMinHeapUtil(root)
+    print("Preorder Traversal:")
+    preorderTraversal(root)
+
+23.	Program to combine two binary search trees into a single tree
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+ 
+# A utility function to merge two sorted arrays into one
+# Time Complexity of below function: O(m + n)
+# Space Complexity of below function: O(m + n)
+def merge_sorted_arr(arr1, arr2):
+    arr = []
+    i = j = 0
+    while i < len(arr1) and j < len(arr2):
+        if arr1[i] <= arr2[j]:
+            arr.append(arr1[i])
+            i += 1
+        else:
+            arr.append(arr2[j])
+            j += 1
+    while i < len(arr1):
+        arr.append(arr1[i])
+        i += 1
+    while i < len(arr2):
+        arr.append(arr2[j])
+        j += 1
+    return arr
+ 
+# A helper function that stores inorder
+# traversal of a tree in arr
+def inorder(root, arr = []):
+    if root:
+        inorder(root.left, arr)
+        arr.append(root.val)
+        inorder(root.right, arr)
+ 
+# A utility function to insert the values
+# in the individual Tree
+def insert(root, val):
+    if not root:
+        return Node(val)
+    if root.val == val:
+        return root
+    elif root.val > val:
+        root.left = insert(root.left, val)
+    else:
+        root.right = insert(root.right, val)
+    return root
+ 
+# Converts the merged array to a balanced BST
+# Explanation of the below code:
+# https://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
+def arr_to_bst(arr):
+    if not arr:
+        return None
+    mid = len(arr) // 2
+    root = Node(arr[mid])
+    root.left = arr_to_bst(arr[:mid])
+    root.right = arr_to_bst(arr[mid + 1:])
+    return root
+ 
+if __name__=='__main__':
+    root1 = root2 = None
+     
+    # Inserting values in first tree
+    root1 = insert(root1, 100)
+    root1 = insert(root1, 50)
+    root1 = insert(root1, 300)
+    root1 = insert(root1, 20)
+    root1 = insert(root1, 70)
+     
+    # Inserting values in second tree
+    root2 = insert(root2, 80)
+    root2 = insert(root2, 40)
+    root2 = insert(root2, 120)
+    arr1 = []
+    inorder(root1, arr1)
+    arr2 = []
+    inorder(root2, arr2)
+    arr = merge_sorted_arr(arr1, arr2)
+    root = arr_to_bst(arr)
+    res = []
+    inorder(root, res)
+    print('Following is Inorder traversal of the merged tree')
+    for i in res:
+      print(i, end = ' ')
+
+24.	Program to Count number of nodes in a binary tree
+
+class node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+ 
+         
+# Function to get the count of nodes
+# in complete binary tree
+def totalNodes(root):
+  # Base case
+    if(root == None):
+        return 0
+ 
+    # Find the left height and the
+    # right heights
+    l = totalNodes(root.left)
+    r = totalNodes(root.right)
+ 
+    return 1 + l + r
+ 
+   
+# Helper Function to allocate a new node
+# with the given data
+def newNode(data):
+    Node = node(data)
+    return Node
+ 
+ 
+# Driver code
+root = newNode(1)
+root.left = newNode(2)
+root.right = newNode(3)
+root.left.left = newNode(4)
+root.left.right = newNode(5)
+root.right.left = newNode(9)
+root.right.right = newNode(8)
+root.left.left.left = newNode(6)
+root.left.left.right = newNode(7)
+ 
+print(totalNodes(root))
+
+25.	Program to remove all nodes which don’t line in any path with sum >= K.
+
+class newNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = self.right = None
+ 
+# print the tree in LVR (Inorder traversal) way.
+def Print(root):
+    if (root != None):
+        Print(root.left)
+        print(root.data, end = " ")
+        Print(root.right)
+ 
+# Main function which truncates
+# the binary tree.
+def pruneUtil(root, k, Sum):
+     
+    # Base Case
+    if (root == None):
+        return None
+ 
+    # Initialize left and right Sums as
+    # Sum from root to this node
+    # (including this node)
+    lSum = [Sum[0] + (root.data)]
+    rSum = [lSum[0]]
+ 
+    # Recursively prune left and right
+    # subtrees
+    root.left = pruneUtil(root.left, k, lSum)
+    root.right = pruneUtil(root.right, k, rSum)
+ 
+    # Get the maximum of left and right Sums
+    Sum[0] = max(lSum[0], rSum[0])
+ 
+    # If maximum is smaller than k,
+    # then this node must be deleted
+    if (Sum[0] < k[0]):
+        root = None
+    return root
+ 
+# A wrapper over pruneUtil()
+def prune(root, k):
+    Sum = [0]
+    return pruneUtil(root, k, Sum)
+ 
+# Driver Code
+if __name__ == '__main__':
+    k = [45]
+    root = newNode(1)
+    root.left = newNode(2)
+    root.right = newNode(3)
+    root.left.left = newNode(4)
+    root.left.right = newNode(5)
+    root.right.left = newNode(6)
+    root.right.right = newNode(7)
+    root.left.left.left = newNode(8)
+    root.left.left.right = newNode(9)
+    root.left.right.left = newNode(12)
+    root.right.right.left = newNode(10)
+    root.right.right.left.right = newNode(11)
+    root.left.left.right.left = newNode(13)
+    root.left.left.right.right = newNode(14)
+    root.left.left.right.right.left = newNode(15)
+ 
+    print("Tree before truncation")
+    Print(root)
+    print()
+    root = prune(root, k) # k is 45
+ 
+    print("Tree after truncation")
+    Print(root)

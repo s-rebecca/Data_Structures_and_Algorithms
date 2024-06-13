@@ -1,0 +1,51 @@
+def bfs(self, start):
+        visited = []
+        queue = [start]
+
+        while queue:
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.append(vertex)
+                print(vertex, end=' ')
+
+                for neighbor, _ in self.adj_list[vertex]:   #'_' is for ignoring the weight values as self.adj_vertex[vertex] contains tuples of (neighbor,weight)
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+
+    def dfs(self, start):
+        visited = set()
+
+        def dfs_recursive(vertex):
+            visited.add(vertex)
+            print(vertex, end=' ')
+            for n, _ in self.adj_list[vertex]:
+                if n not in visited:
+                    dfs_recursive(n)
+
+        dfs_recursive(start)
+
+ 
+    def dijkstra(self,start):
+        num_vertices=len(self.adj_list)
+        distance=[float('inf')]*num_vertices
+        distance[start]=0
+        visited=[False]*num_vertices
+
+        for _ in range(num_vertices):
+            min_dist=float('inf')
+            min_vertex=-1
+        
+            for v in range(num_vertices):
+                if not visited[v] and distance[v]<min_dist:
+                    min_dist=distance[v]
+                    min_vertex=v
+            if min_vertex==-1:
+                break
+            visited[min_vertex]=True
+
+            for neighbor,weight in self.adj_list[min_vertex]:
+                if not visited[neighbor]:
+                    new_dist=distance[min_vertex]+weight
+                    if new_dist<distance[neighbor]:
+                        distance[neighbor]=new_dist
+        return distance

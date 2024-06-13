@@ -1,0 +1,32 @@
+class Stack:
+    def __init__(self):
+        self.q1 = []
+        self.q2 = []
+        
+    def push(self, item):
+        self.q2.append(item)
+        
+        while self.q1:
+            self.q2.append(self.q1.pop(0))
+            
+        self.q1, self.q2 = self.q2, self.q1
+        
+    def isEmpty(self):
+        return self.q1 == []
+        
+    def pops(self):
+        if self.isEmpty == True:
+            print("error")
+            
+        return self.q1.pop(0)
+        
+        
+    def print_(self):
+        print(self.q1)
+
+s = Stack()
+s.push(1)
+s.push(2)
+s.push(3)
+s.pops()
+s.print_()

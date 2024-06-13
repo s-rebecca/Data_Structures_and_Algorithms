@@ -1,0 +1,104 @@
+class Graph:
+    def __init__(self):
+        self.adj_list = {}
+
+    def add_node(self, node):
+        if node not in self.adj_list:
+            self.adj_list[node] = []
+
+    def add_edge(self, node1, node2, weight):
+        if node1 in self.adj_list and node2 in self.adj_list:
+            self.adj_list[node1].append((node2, weight))
+            self.adj_list[node2].append((node1, weight))
+
+    def get_adjacent(self, node):
+        if node in self.adj_list:
+            return self.adj_list[node]
+        else:
+            return []
+
+    def bfs(self, start):
+        visited = []
+        queue = [start]
+
+        while queue:
+            vertex = queue.pop(0)
+            if vertex not in visited:
+                visited.append(vertex)
+                print(vertex, end=' ')
+
+                for neighbor, _ in self.adj_list[vertex]:   #'_' is for ignoring the weight values as self.adj_vertex[vertex] contains tuples of (neighbor,weight)
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+
+    def dfs(self, start):
+        visited = set()
+
+        def dfs_recursive(vertex):
+            visited.add(vertex)
+            print(vertex, end=' ')
+            for n, _ in self.adj_list[vertex]:
+                if n not in visited:
+                    dfs_recursive(n)
+
+        dfs_recursive(start)
+
+ 
+    def dijkstra(self,start):
+        num_vertices=len(self.adj_list)
+        distance=[float('inf')]*num_vertices
+        distance[start]=0
+        visited=[False]*num_vertices
+
+        for _ in range(num_vertices):
+            min_dist=float('inf')
+            min_vertex=-1
+        
+            for v in range(num_vertices):
+                if not visited[v] and distance[v]<min_dist:
+                    min_dist=distance[v]
+                    min_vertex=v
+            if min_vertex==-1:
+                break
+            visited[min_vertex]=True
+
+            for neighbor,weight in self.adj_list[min_vertex]:
+                if not visited[neighbor]:
+                    new_dist=distance[min_vertex]+weight
+                    if new_dist<distance[neighbor]:
+                        distance[neighbor]=new_dist
+        return distance
+        
+
+
+g = Graph()
+
+g.add_node(0)
+g.add_node(1)
+g.add_node(2)
+g.add_node(3)
+g.add_node(4)
+g.add_node(5)
+
+#the third parameter is the weight of the edges
+
+g.add_edge(5, 4, 2) 
+g.add_edge(0, 1, 4)
+g.add_edge(0, 2, 1)
+g.add_edge(0, 3, 3)
+g.add_edge(2, 4, 2)
+
+for i in range(6):
+    adjacent_nodes = g.get_adjacent(i)
+    print("Adjacent nodes of " + str(i) + ":", adjacent_nodes)
+
+start_vertex = 0
+print("\nBFS traversal starting from vertex", start_vertex)
+g.bfs(start_vertex)
+
+print("\nDFS traversal starting from vertex", start_vertex)
+g.dfs(start_vertex)
+
+print("\nDijkstra's algorithm starting from vertex", start_vertex)
+distances = g.dijkstra(1)
+print("Distances:", distances)

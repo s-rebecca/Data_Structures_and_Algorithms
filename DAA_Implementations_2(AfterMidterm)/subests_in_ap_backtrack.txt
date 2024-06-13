@@ -1,0 +1,29 @@
+def is_ap(subset):
+    n = len(subset)
+    if n <= 1:
+        return True
+
+    diff = subset[1] - subset[0]
+    for i in range(2, n):
+        if subset[i] - subset[i - 1] != diff:
+            return False
+    return True
+
+def backtrack(nums, start, path, result):
+    if is_ap(path):
+        result.append(path[:])
+
+    for i in range(start, len(nums)):
+        path.append(nums[i])
+        backtrack(nums, i + 1, path, result)
+        path.pop()
+
+def count_ap_subsets(nums):
+    result = []
+    backtrack(nums, 0, [], result)
+    return len(result)
+
+# Example usage:
+nums = [1, 3, 5, 7, 9]
+result = count_ap_subsets(nums)
+print("Number of AP subsets:", result)

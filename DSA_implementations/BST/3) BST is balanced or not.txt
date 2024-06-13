@@ -1,0 +1,42 @@
+program to determine height & whether a BST is balanced or not
+_________________________________________________________
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+def height(node):
+    if node is None:
+        return 0
+
+    left_height = height(node.left)
+    right_height = height(node.right)
+
+    return max(left_height, right_height) + 1
+
+def is_balanced(root):
+    if root is None:
+        return True
+
+    left_height = height(root.left)
+    right_height = height(root.right)
+
+    if abs(left_height - right_height) <= 1 and is_balanced(root.left) and is_balanced(root.right):
+        return True
+
+    return False
+
+# Test the code
+# Create an unbalanced Binary Search Tree
+root = Node(5)
+root.left = Node(3)
+root.left.left = Node(2)
+root.left.left.left = Node(1)
+
+# Check if the BST is balanced
+if is_balanced(root):
+    print("The Binary Search Tree is balanced.")
+else:
+    print("The Binary Search Tree is not balanced.")

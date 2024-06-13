@@ -1,0 +1,19 @@
+def longestArithSeqLength(nums):
+        n=len(nums)
+        nums.sort()
+        dp=[{} for i in range(n)]
+        dp[1][nums[1]-nums[0]]=2
+        ans=2
+        for i in range(2,n):
+            for j in range(0,i):
+                if nums[i]-nums[j] in dp[j]:
+                    prev=dp[j][nums[i]-nums[j]]
+                else:
+                    prev=1
+                ans=max(ans,1+prev)
+                dp[i][nums[i]-nums[j]]=1+prev
+        return ans
+
+num=[22,34,21,12,23,2,5,24]
+l=longestArithSeqLength(num)
+print(l)

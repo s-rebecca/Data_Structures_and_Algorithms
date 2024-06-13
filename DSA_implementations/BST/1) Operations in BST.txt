@@ -1,0 +1,77 @@
+Operations in BST
+______________________________
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+def search(root, key):
+    if root is None or root.data == key:
+        return root
+
+    if root.data < key:
+        return search(root.right, key)
+
+    return search(root.left, key)
+
+# Function to insert a node in BST
+def insert(root, node):
+    if root is None:
+        root = node
+    else:
+        if root.data < node.data:
+            if root.right is None:
+                root.right = node
+            else:
+                insert(root.right, node)
+        else:
+            if root.left is None:
+                root.left = node
+            else:
+                insert(root.left, node)
+
+def find_minimum(root):
+    current = root
+    while current.left is not None:
+        current = current.left
+    return current
+
+def delete(root, key):
+    if root is None:
+        return root
+
+    if key < root.key:
+        root.left = delete(root.left, key)
+    elif key > root.key:
+        root.right = delete(root.right, key)
+    else: # when there is only one child leaf node
+        if root.left is None:
+            return root.right
+        elif root.right is None:
+            return root.left
+        # when there are 2 child nodes
+        temp = find_minimum(root.right)
+        root.key = temp.key
+        root.right = delete(root.right, temp.key)
+
+    return root
+
+# Test the code
+# Create a sample Binary Search Tree
+root = Node(5)
+insert(root, Node(3))
+insert(root, Node(7))
+insert(root, Node(2))
+insert(root, Node(4))
+insert(root, Node(6))
+insert(root, Node(8))
+
+# Search for an element in the BST
+key = 4
+result = search(root, key)
+if result:
+    print(f"Element {key} found in the Binary Search Tree.")
+else:
+    print(f"Element {key} not found in the Binary Search Tree.")

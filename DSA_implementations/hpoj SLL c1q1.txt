@@ -1,0 +1,137 @@
+ class SLList():
+
+#@start-editable@
+
+    class node():
+        def __init__(self,e):
+            self.element=e
+            self.next=None
+            
+    def __init__(self):
+        self.head=None
+        self.length=0
+        
+    def isEmpty(self):
+        return self.length==0
+        
+    def insertFirst(self,e):
+        newNode=self.node(e)
+        if self.isEmpty():
+            self.head=newNode
+        else:
+            newNode.next=self.head
+            self.head=newNode
+        self.length+=1
+    
+    def insertLast(self,e):
+        newNode=self.node(e)
+        if self.isEmpty():
+            self.head=newNode
+        else:
+            currnode=self.head
+            while (currnode.next!=None):
+                currnode=currnode.next
+            currnode.next=newNode
+        self.length+=1
+        
+    def listSize(self):
+        return self.length
+        
+    
+
+    
+#@end-editable@
+    
+    def printList(self):
+        if (self.isEmpty()):
+            print("List is Empty")
+        else:
+            currentNode = self.head
+            while(currentNode != None):
+                print(currentNode.element, end =" ")
+                currentNode = currentNode.next
+            print("")
+            
+#@start-editable@
+
+    def deleteFirst(self):
+        if self.isEmpty():
+            print("List is Empty")
+        else:
+            temp=self.head
+            self.head=self.head.next
+            del temp
+            self.length-=1
+            
+    def deleteLast(self):
+        if self.isEmpty():
+            print("List is Empty")
+        else:
+            currnode=self.head
+            while (currnode.next.next!=None):
+                currnode=currnode.next
+            temp=currnode
+            currnode.next=None
+            del temp
+            self.length-=1
+            
+    def insertAfter(self,s,e):
+        flag=1
+        if self.isEmpty():
+            print("List is Empty")
+        elif self.length==1:
+            if self.head.element==s:
+                self.head.next=self.node(e)
+                self.length+=1
+            else:
+                print("Element not in list")
+        else:
+            currnode=self.head
+            while (currnode.element!=s):
+                if currnode.next==None:
+                    print("Element not in list")
+                    flag=0
+                    return False
+                currnode=currnode.next
+            if flag==1:
+                newNode=self.node(e)
+                newNode.next=currnode.next
+                currnode.next=newNode
+                self.length+=1
+                return True
+
+#@end-editable@
+
+def testSLL():
+    sll = SLList()
+    inputs=int(input())
+    while inputs>0:
+        command=input()
+        operation=command.split()
+        if(operation[0]=="S"):
+        	print(sll.listSize())
+        elif(operation[0]=="I"):
+        	print(sll.isEmpty())
+        elif(operation[0]=="IF"):
+            sll.insertFirst(int(operation[1]))
+            sll.printList()
+        elif(operation[0]=="IL"):
+            sll.insertLast(int(operation[1]))
+            sll.printList()
+        elif(operation[0]=="DF"):
+            sll.deleteFirst()
+            sll.printList()
+        elif(operation[0]=="DL"):
+            sll.deleteLast()
+            sll.printList()
+        elif(operation[0]=="IA"):
+            returnVal = sll.insertAfter(int(operation[1]), int(operation[2]))
+            if(returnVal == True):
+                sll.printList()
+        inputs-=1
+
+def main():
+    testSLL()
+
+if _name_ == '_main_':
+    main()

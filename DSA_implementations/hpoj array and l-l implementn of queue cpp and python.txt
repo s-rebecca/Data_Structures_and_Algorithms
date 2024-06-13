@@ -1,0 +1,242 @@
+Array implemtn of queue:
+
+#include <iostream>
+#define MAX_SIZE 101
+
+using namespace std;
+
+class Queue{
+    private:
+    int a[MAX_SIZE];
+    int front, rear;
+    
+    public:
+    
+    Queue(){
+        front=-1;
+        rear=-1;
+    }
+    
+    bool isEmpty(){
+        return (front == -1 && rear == -1);
+    }
+    
+    bool isFull(){
+        return (rear+1)%MAX_SIZE == front ? true : false;
+    }
+    
+    void enqueue(int x){
+        cout<<"enqueing: "<<x<<" \n";
+        if(isFull()){
+            cout<<"queue is full!\n";
+            return;
+        }
+        if(isEmpty()){
+            front=rear=0;
+        }
+        else{
+            rear = (rear+1)%MAX_SIZE;
+        }
+        a[rear] = x;
+    }
+    
+    void dequeue(){
+        cout<<"dequeing: \n";
+        if(isEmpty()){
+            cout<<"queue is empty! \n";
+            return;
+        }
+        
+        else if(front==rear){
+            rear=front=-1;
+        }
+        
+        else{
+            front = (front+1)%MAX_SIZE;
+        }
+    }
+    
+    int Front()
+	{
+		if(front == -1)
+		{
+			cout<<"Error: cannot return front from empty queue\n";
+			return -1; 
+		}
+		return a[front];
+	}
+	/* 
+	   Printing the elements in queue from front to rear. 
+	   This function is only to test the code. 
+	   This is not a standard function for Queue implementation. 
+	*/
+	void Print()
+	{
+		// Finding number of elements in queue  
+		int count = (rear+MAX_SIZE-front)%MAX_SIZE + 1;
+		cout<<"Queue       : ";
+		for(int i = 0; i <count; i++)
+		{
+			int index = (front+i) % MAX_SIZE; // Index of element while travesing circularly from front
+			cout<<a[index]<<" ";
+		}
+		cout<<"\n\n";
+	}
+};
+int main()
+{
+	/*Driver Code to test the implementation
+	  Printing the elements in Queue after each Enqueue or Dequeue 
+	*/
+   Queue Q; // creating an instance of Queue. 
+   Q.enqueue(2);  Q.Print();  
+   Q.enqueue(4);  Q.Print();  
+   Q.enqueue(6);  Q.Print();
+   Q.dequeue();	  Q.Print();
+   Q.enqueue(8);  Q.Print();
+}
+    
+_______________________________________________________________________________________
+_______________________________________________________________________________________
+
+linked list implemenation:
+
+/*Queue - Linked List implementation*/ (in PYTHON, below this code)
+#include<stdio.h>
+#include<stdlib.h>
+struct Node {
+	int data;
+	struct Node* next;
+};
+// Two glboal variables to store address of front and rear nodes. 
+struct Node* front = NULL;
+struct Node* rear = NULL;
+
+// To Enqueue an integer
+void Enqueue(int x) {
+	struct Node* temp = 
+		(struct Node*)malloc(sizeof(struct Node));
+	temp->data =x; 
+	temp->next = NULL;
+	if(front == NULL && rear == NULL){
+		front = rear = temp;
+		return;
+	}
+	rear->next = temp;
+	rear = temp;
+}
+
+// To Dequeue an integer.
+void Dequeue() {
+	struct Node* temp = front;
+	if(front == NULL) {
+		printf("Queue is Empty\n");
+		return;
+	}
+	if(front == rear) {
+		front = rear = NULL;
+	}
+	else {
+		front = front->next;
+	}
+	free(temp);
+}
+
+int Front() {
+	if(front == NULL) {
+		printf("Queue is empty\n");
+		return;
+	}
+	return front->data;
+}
+
+void Print() {
+	struct Node* temp = front;
+	while(temp != NULL) {
+		printf("%d ",temp->data);
+		temp = temp->next;
+	}
+	printf("\n");
+}
+
+int main(){
+	/* Drive code to test the implementation. */
+	// Printing elements in Queue after each Enqueue or Dequeue 
+	Enqueue(2); Print(); 
+	Enqueue(4); Print();
+	Enqueue(6); Print();
+	Dequeue();  Print();
+	Enqueue(8); Print();
+}
+    
+-----------------------------------------------------------------------
+In Python:
+
+class Node:
+    def __init__(self,data):
+        self.data=data
+        self.next=None
+        
+class Queue:
+    def __init__(self):
+        self.front = self.rear = None
+        
+    def isEmpty():
+        return self.front == None
+    
+    def EnQueue(self, item):
+        temp = Node(item)  //memory allocation
+        if self.rear == None:
+            self.front = self.rear = temp
+            return
+        self.rear.next = temp
+        self.rear = temp
+        
+    def DeQueue(self):
+        if self.isEmpty:
+            return
+        
+        temp = self.front
+        self.front = temp.next
+        
+        if self.front == None:
+            self.rear = None
+
+    def display(self):
+        if self.isEmpty():
+            return
+        else:
+            temp = self.front
+            while(temp):
+                print(temp.data, end=" ")
+                temp = temp.next
+            print()	
+            
+if __name__ == '__main__':
+    q = Queue()
+    q.EnQueue(10)
+    q.EnQueue(20)
+    q.DeQueue()
+    q.DeQueue()
+    q.EnQueue(30)
+    q.EnQueue(40)
+    q.EnQueue(50)
+    q.DeQueue()
+    print("Queue Front : " + str(q.front.data if q.front != None else -1))
+    print("Queue Rear : " + str(q.rear.data if q.rear != None else -1))
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

@@ -1,0 +1,52 @@
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+def inorder_traversal(root, result):
+    if root is None:
+        return
+    
+    inorder_traversal(root.left, result)
+    result.append(root.value)
+    inorder_traversal(root.right, result)
+
+def convert_bst_to_min_heap(root, arr, index):
+    if root is None:
+        return
+    
+    root.value = arr[index[0]]
+    index[0] += 1
+    
+    convert_bst_to_min_heap(root.left, arr, index)
+    convert_bst_to_min_heap(root.right, arr, index)
+
+def convert_to_min_heap(root):
+    if root is None:
+        return None
+    
+    # Perform in-order traversal of the BST
+    arr = []
+    inorder_traversal(root, arr)
+    
+    # Reconstruct the BST with values arranged as a min-heap
+    index = [0]
+    convert_bst_to_min_heap(root, arr, index)
+
+# Example usage
+# Constructing the Binary Search Tree
+root = Node(4)
+root.left = Node(2)
+root.right = Node(6)
+root.left.left = Node(1)
+root.left.right = Node(3)
+root.right.left = Node(5)
+root.right.right = Node(7)
+
+# Convert BST to min-heap
+convert_to_min_heap(root)
+
+# Print the min-heap
+print("Min-Heap elements:")
+inorder_traversal(root, [])
